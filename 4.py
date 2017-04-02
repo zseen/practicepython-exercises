@@ -1,19 +1,21 @@
-while True:
-    try:
-        x=int(input("Type a number please:"))
-        break
-    except ValueError:
-        pass
+def divisors(x):
+    divisorList=[]
+    for i in range(1,x+1):
+        if x%i==0:
+            divisorList.append(i)
+    return divisorList
 
-# possible=[]
-# y=0
+def main():
+    while True:
+        try:
+            x = int(input("Type a number please:"))
+            break
+        except ValueError:
+            pass
+    y=divisors(x)
+    print (y)
 
-# while y<x:
-#     y=y+1
-#     possible.append(y)
-# print (possible)
+if __name__=="__main__":
+    main()
 
-for i in range(1,x+1):
-    if x%i==0:
-        print (i)
 
