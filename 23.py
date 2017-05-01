@@ -1,24 +1,19 @@
-happylist=[]
+def readFileAsList(filename):
+    with open(filename) as file:
+        numberslist = file.readlines()
+    numberslist = [int(x.strip()) for x in numberslist]
 
-with open('happynumbers.txt') as h:
-    line = h.readline()
-    while line:
-        happylist.append(int(line))
-        line = h.readline()
+    return numberslist
 
+def sortedOverlap(list1, list2):
+    return sorted(list(set(list1).intersection(list2)))
 
-primeslist=[]
+def main():
+    happynumbersList = readFileAsList("happynumbers.txt")
+    primenumbersList = readFileAsList("primenumbers.txt")
+    overlapList = sortedOverlap(happynumbersList, primenumbersList)
 
-with open('primenumbers.txt') as p:
-    line=p.readline()
-    while line:
-        primeslist.append(int(line))
-        line = p.readline()
+    print(overlapList)
 
-overlap=[]
-
-for item in happylist:
-    if item in primeslist:
-        overlap.append(item)
-
-print(overlap)
+if __name__ == "__main__":
+    main()
