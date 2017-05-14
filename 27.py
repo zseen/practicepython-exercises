@@ -1,28 +1,29 @@
-# 1. main: endless loop: askP1ForInput(), draw(), askP2ForInput(), draw() --- global board
+# 1. [X] main: endless loop: askP1ForInput(), draw(), askP2ForInput(), draw() --- global board
 # 2. improve draw
-#   a. spaces
+#   a. [X] spaces
 #   b. actual board
-# 3. refactor to askForInput(character) with character being 'x' or 'o'
-# 4. introduce counter, break loop when 9
+# 3. [X] refactor to askForInput(character) with character being 'x' or 'o'
+# 4. [X] introduce counter, break loop when 9
 # 5. create a game class with the board being a member, main is only 2 lines: game = Game() \ game.play()
+# 6. do not allow overwriting any mark
+# 7. handle all kinds of exceptions separately, with useful error messages
 
-def askP1ForInput(board):
-    inputP1=input("P1, it is your turn! Type the row and column (1-3) where you would like to put your X in this format: r,c.:")
-    inputP1List=inputP1.split(",")
+def askForInput(board, mark):
 
-    r = int(inputP1List[0])
-    c = int(inputP1List[1])
+    while True:
+        try:
+            inputString=input("%s, it is your turn! Type the row and column (1-3) where you would like to put your %s in this format: r,c.:" % (mark, mark) )
+            inputList=inputString.split(",")
 
-    board[r - 1][c - 1] = "X"
-
-def askP2ForInput(board):
-    inputP2=input("P2, it is your turn! Type the row and column (1-3) where you would like to put your Y in this format: r,c.:")
-    inputP2List = inputP2.split(",")
-
-    r = int(inputP2List[0])
-    c = int(inputP2List[1])
-
-    board[r - 1][c - 1] = "Y"
+            r = int(inputList[0])
+            c = int(inputList[1])
+            if board[r - 1][c - 1] == 0:
+                board[r - 1][c - 1] = mark
+                break
+            else:
+                print("Ohh, this field is already marked.")
+        except Exception as e:
+            print("Ohh, exception: " + str(e))
 
 def draw(board):
     N=3
@@ -39,11 +40,11 @@ def main():
     counter=0
 
     while counter<=9:
-        askP1ForInput(board)
+        askForInput(board, "X")
         draw(board)
-        askP2ForInput(board)
+        askForInput(board, "Y")
         draw(board)
-        counter=counter+1
+        counter += 1
 
 if __name__=="__main__":
     main()
