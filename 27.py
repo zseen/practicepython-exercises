@@ -38,6 +38,8 @@ class Game(object):
                 c = int(inputList[1])
                 if  len(inputList) != 2:
                     print("Ohh, tooo many numbers")
+                elif r < 1 or c < 1:
+                    print ("Ohh, your numbers should be between 1 and 3")
                 elif self.board[r - 1][c - 1] == 0:
                     self.board[r - 1][c - 1] = mark
                     break
@@ -63,7 +65,7 @@ class Game(object):
 
 
 def main():
-    g=Game(4)
+    g=Game(3)
     g.play()
 
 if __name__ == "__main__":
