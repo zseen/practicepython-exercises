@@ -14,9 +14,7 @@ class Game(object):
 
     def __init__(self, size):
         self.size = size
-        self.board = [[0, 0, 0],
-                 [0, 0, 0],
-                 [0, 0, 0]]
+        self.board = [[0 for _ in range(self.size)] for _ in range(self.size)]
 
     def draw(self):
         for j in range(0, self.size):
@@ -65,7 +63,7 @@ class Game(object):
 
 
 def main():
-    g=Game(3)
+    g=Game(4)
     g.play()
 
 if __name__ == "__main__":
