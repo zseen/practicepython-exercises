@@ -5,26 +5,29 @@
 # 3. [X] refactor to askForInput(character) with character being 'x' or 'o'
 # 4. [X] introduce counter, break loop when 9
 # 5. [X]create a game class with the board being a member, main is only 2 lines: game = Game() \ game.play()
-# 6. do not allow overwriting any mark
-# 7. handle all kinds of exceptions separately, with useful error messages
+# 6. [X]do not allow overwriting any mark
+# 7. [X]handle all kinds of exceptions separately, with useful error messages
 
 # [X]delete board param, use self.board
 
 class Game(object):
 
-
-    def __init__(self):
+    def __init__(self, size):
+        self.size = size
         self.board = [[0, 0, 0],
                  [0, 0, 0],
                  [0, 0, 0]]
 
     def draw(self):
-        N = 3
-        for j in range(0, N):
-            for i in range(0, N):
-                print(self.board[j][i], end=" ")
+        for j in range(0, self.size):
+            print(" ---" * self.size)
+            print("| ", end="")
+            for i in range(0, self.size):
+                print(self.board[j][i], "|", end=" ")
 
             print("")
+        print(" ---" * self.size)
+        print("")
 
 
     def askForInput(self, mark):
@@ -62,7 +65,7 @@ class Game(object):
 
 
 def main():
-    g=Game()
+    g=Game(3)
     g.play()
 
 if __name__ == "__main__":
