@@ -57,19 +57,28 @@ class Game(object):
 
         return NOBODY_WINS
 
+    def isGameOver(self):
+        if self.winCheck() == FIRST_WINS:
+            print(FIRST_WINS)
+            return True
+        elif self.winCheck() == SECOND_WINS:
+            print(SECOND_WINS)
+            return True
+        elif self.winCheck() == NOBODY_WINS:
+            return False
+
+
+
+
     def play(self):
         counter = 0
         while True:
             self.askForInput("X")
             self.draw()
 
-            winCheckValue=self.winCheck()
-            if winCheckValue==FIRST_WINS:
-                print(FIRST_WINS)
+            if self.isGameOver() == True:
                 break
-            elif winCheckValue==SECOND_WINS:
-                print(SECOND_WINS)
-                break
+
             counter += 1
 
             if counter >= 9:
@@ -78,13 +87,7 @@ class Game(object):
 
             self.askForInput("Y")
             self.draw()
-            self.winCheck()
-            winCheckValue = self.winCheck()
-            if winCheckValue == FIRST_WINS:
-                print(FIRST_WINS)
-                break
-            elif winCheckValue == SECOND_WINS:
-                print(SECOND_WINS)
+            if self.isGameOver() == True:
                 break
             counter += 1
 
