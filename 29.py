@@ -43,15 +43,15 @@ class Game(object):
             #     print("Ohh, exception: " + str(e))
 
     def winCheck(self):
-        horizontal=horizontalWin(self.board)
+        horizontal=self.horizontalWin(self.board)
         if horizontal != NOBODY_WINS:
             return horizontal
 
-        vertical=verticalWin(self.board)
+        vertical=self.verticalWin(self.board)
         if vertical != NOBODY_WINS:
             return vertical
 
-        diagonal=diagonalWin(self.board)
+        diagonal=self.diagonalWin(self.board)
         if diagonal != NOBODY_WINS:
             return diagonal
 
@@ -59,7 +59,7 @@ class Game(object):
 
     def play(self):
         counter = 0
-        while counter <= 9:
+        while True:
             self.askForInput("X")
             self.draw()
 
@@ -69,6 +69,11 @@ class Game(object):
                 break
             elif winCheckValue==SECOND_WINS:
                 print(SECOND_WINS)
+                break
+            counter += 1
+
+            if counter >= 9:
+                print("Draw")
                 break
 
             self.askForInput("Y")
@@ -84,67 +89,64 @@ class Game(object):
             counter += 1
 
 
+    def numberToWinner(self,mark):
+        if mark == 'X':
+            return FIRST_WINS
+        elif mark == 'Y':
+            return SECOND_WINS
+        else:
+            raise ValueError("Unexpected winner")
 
-FIRST_WINS= "First player wins"
-SECOND_WINS= "Second player wins"
-NOBODY_WINS= "Nobody won"
+    def all_same(self,items):
+        return all(x == items[0] for x in items)
 
+    def horizontalWin(self,board):
+        N = len(board)
 
-def numberToWinner(mark):
-    if mark== 'X':
-        return FIRST_WINS
-    elif mark == 'Y':
-        return SECOND_WINS
-    else:
-        raise ValueError("Unexpected winner")
+        for j in range(0, N):
+            rowList = []
+            for i in range(0, N):
+                rowList.append(board[j][i])
 
-def all_same(items):
-    return all(x == items[0] for x in items)
+            if (self.all_same(rowList)) and rowList[0] != 0:
+                return self.numberToWinner(rowList[0])
 
-def horizontalWin(board):
-    N = len(board)
+        return NOBODY_WINS
 
-    for j in range(0, N):
+    def verticalWin(self,board):
+        N = len(board)
+
+        for i in range(0, N):
+            rowList = []
+            for j in range(0, N):
+                rowList.append(board[j][i])
+
+            if (self.all_same(rowList)) and rowList[0] != 0:
+                return self.numberToWinner(rowList[0])
+
+        return NOBODY_WINS
+
+    def diagonalWin(self,board):
+        N = len(board)
         rowList = []
         for i in range(0, N):
-            rowList.append(board[j][i])
+            rowList.append(board[i][i])
 
-        if(all_same(rowList)) and rowList[0] != 0:
-            return numberToWinner(rowList[0])
+        if (self.all_same(rowList)) and rowList[0] != 0:
+            return self.numberToWinner(rowList[0])
 
-    return NOBODY_WINS
-
-def verticalWin(board):
-    N = len(board)
-
-    for i in range(0, N):
         rowList = []
-        for j in range(0, N):
-            rowList.append(board[j][i])
+        for i in range(0, N):
+            rowList.append(board[i][N - 1 - i])
 
-        if (all_same(rowList)) and rowList[0] != 0:
-            return numberToWinner(rowList[0])
+        if (self.all_same(rowList)) and rowList[0] != 0:
+            return self.numberToWinner(rowList[0])
 
-    return NOBODY_WINS
+        return NOBODY_WINS
 
-def diagonalWin(board):
-    N = len(board)
-    rowList = []
-    for i in range(0, N):
-        rowList.append(board[i][i])
-
-    if (all_same(rowList)) and rowList[0] != 0:
-        return numberToWinner(rowList[0])
-
-
-    rowList = []
-    for i in range(0, N):
-        rowList.append(board[i][N-1-i])
-
-    if (all_same(rowList)) and rowList[0] != 0:
-        return numberToWinner(rowList[0])
-
-    return NOBODY_WINS
+FIRST_WINS = "First player wins"
+SECOND_WINS = "Second player wins"
+NOBODY_WINS = "Nobody won"
 
 
 
