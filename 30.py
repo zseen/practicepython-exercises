@@ -1,25 +1,21 @@
 import random
 
 
-class readAFile(object):
+class ReadAFile(object):
 
     @staticmethod
     def readSOWPODS():
-        text = []
         with open('SOWPODS.txt', 'r') as f:
-            line = f.readline().strip()
-            text.append(line)
-            while line:
-                line = f.readline().strip()
-                text.append(line)
-        return text[random.randint(0, (len(text) - 1))]
+            lines = f.readlines()
+
+        randomIndex = random.randint(0, (len(lines) - 1))
+        return lines[randomIndex]
 
 
 def main():
-    r = readAFile()
-    print(r.readSOWPODS())
+    print(ReadAFile.readSOWPODS())
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
     main()
 
