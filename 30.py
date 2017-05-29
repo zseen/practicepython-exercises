@@ -1,19 +1,38 @@
 import random
 
 
-class ReadAFile(object):
+def myStrip(x):
+    return x.strip()
+
+
+class RandomSOWPODSGenerator(object):
+
+    def __init__(self):
+        self.lines = None
+
+    def generate(self):
+        if self.lines is None:
+            raise RuntimeError("generate called before initLines")
+        randomIndex = random.randint(0, (len(self.lines) - 1))
+        return self.lines[randomIndex]
+
+    def initLines(self):
+        self.lines = RandomSOWPODSGenerator.__createLines()
 
     @staticmethod
-    def readSOWPODS():
+    def __createLines():
         with open('SOWPODS.txt', 'r') as f:
             lines = f.readlines()
+            strippedLines = list(map(myStrip, lines))
 
-        randomIndex = random.randint(0, (len(lines) - 1))
-        return lines[randomIndex]
+        return strippedLines
 
 
 def main():
-    print(ReadAFile.readSOWPODS())
+    p = RandomSOWPODSGenerator()
+    p.initLines()
+    for _ in range(0, 100):
+        print(p.generate())
 
 
 if __name__ == "__main__":
