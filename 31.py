@@ -10,6 +10,7 @@ class Hangman(object):
         self.strCharRandomWord = None
         self.strPrintUnderscore = None
         self.strUnderscoreList = None
+        self.alreadyGuessed = set()
 
     def getAWord(self):
         with open('SOWPODS.txt', 'r') as f:
@@ -26,26 +27,27 @@ class Hangman(object):
     def getAnInput(self):
         self.askForLetter = input(str('Give me a letter please!:'))
 
-        # print(self.askForLetter)
-        # return self.askForLetter
-
-    def printUnderscore(self):
+    def printUnderscores(self):
         for i in range(0, len(self.charRandomWord)):
             self.underscoreList.append("_")
         self.strPrintUnderscore = " ".join(self.underscoreList)
         print(self.strPrintUnderscore)
 
     def underscoreOrLetter(self):
-        for index in range(0, len(self.charRandomWord)):
-            if self.askForLetter == self.charRandomWord[index]:
-                del self.underscoreList[index]
-                self.underscoreList.insert(index, self.askForLetter)
-                self.strUnderscoreList = " ".join(self.underscoreList)
+        if self.askForLetter in self.alreadyGuessed:
+            print("Ohh, you have already guessed this letter")
+        elif self.askForLetter not in self.charRandomWord:
+            print("Ohh, your letter is not in the word")
 
-        print(self.strUnderscoreList)
+        else:
+            self.alreadyGuessed.add(self.askForLetter)
+            for index in range(0, len(self.charRandomWord)):
+                if self.askForLetter == self.charRandomWord[index]:
+                    del self.underscoreList[index]
+                    self.underscoreList.insert(index, self.askForLetter)
+                    self.strUnderscoreList = " ".join(self.underscoreList)
 
-        # print(self.underscoreList)
-
+            print(self.strUnderscoreList)
     # def letterInWord(self):
     #     for item in range(0, len(self.randomWord)):
     #         if self.askForLetter == self.charRandomWord[item]:
@@ -54,19 +56,17 @@ class Hangman(object):
     #             print("_ ", end='')
 
     def playHangman(self):
-        counter = 0
         self.getAWord()
         # x = self.printUnderscore()
-        self.printUnderscore()
-        while counter <= len(self.charRandomWord):
-
+        self.printUnderscores()
+        while self.underscoreList != self.charRandomWord:
             self.getAnInput()
             # self.letterInWord()
             self.underscoreOrLetter()
             if self.underscoreList == self.charRandomWord:
                 print("Yeeee, you won!")
                 break
-            counter += 1
+
 
 
 def main():
