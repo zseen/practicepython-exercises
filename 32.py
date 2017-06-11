@@ -1,6 +1,6 @@
 import random
 
-DEBUG_TRACE = True
+DEBUG_TRACE = False
 
 
 class Hangman(object):
@@ -21,17 +21,19 @@ class Hangman(object):
         for i in range(0, len(self.randomWordLetters)):
             self.randomWordLettersHidden.append("_")
 
-        self.bodyParts = [None] * 6
+        self.__initialiseBodyParts()
 
+        if DEBUG_TRACE:
+            print(" ".join(self.randomWordLetters))
+
+    def __initialiseBodyParts(self):
+        self.bodyParts = [None] * 6
         self.bodyParts[0] = "O"  # head
         self.bodyParts[1] = "|"  # torso
         self.bodyParts[2] = "\\"  # leftArm
         self.bodyParts[3] = "/"  # rightArm
         self.bodyParts[4] = "/"  # leftLeg
         self.bodyParts[5] = "\\"  # rightLeg
-
-        if DEBUG_TRACE:
-            print(" ".join(self.randomWordLetters))
 
     @staticmethod
     def __generateRandomWord():
@@ -56,11 +58,16 @@ class Hangman(object):
             print("Ohh, you have already guessed this letter")
         elif currentGuessLetter not in self.randomWordLetters:
             print("Ohh, your letter is not in the word")
-            self.guessesLeft -= 1
-            self.bodyParts[self.guessesLeft] = " "
+            self.__takeGuessAway()
+            self.__printHangmanFigure()
         else:
             self.__updateHiddenWord(currentGuessLetter)
-            self.__printHiddenWord()
+
+        self.__printHiddenWord()
+
+    def __takeGuessAway(self):
+        self.guessesLeft -= 1
+        self.bodyParts[self.guessesLeft] = " "
 
     def __updateHiddenWord(self, currentGuessLetter):
         self.alreadyGuessed.add(currentGuessLetter)
@@ -69,46 +76,43 @@ class Hangman(object):
                 del self.randomWordLettersHidden[index]
                 self.randomWordLettersHidden.insert(index, currentGuessLetter)
 
-    def printHangmanFigure(self):
-        print(" " + self.bodyParts[2], end="")
-        print(self.bodyParts[0], end="")
-        print(" " + self.bodyParts[3])
-        print("  " + self.bodyParts[1])
-        print(" " + self.bodyParts[4], end="")
-        print(" " + self.bodyParts[5], end="")
+    def __printHangmanFigure(self):
+        print(self.bodyParts[2] + self.bodyParts[0] + self.bodyParts[3] )
+        print(" " + self.bodyParts[1])
+        print(self.bodyParts[4] + " " + self.bodyParts[5])
+
 
     @staticmethod
-    def wouldLikeANewGame():
+    def __wouldLikeANewGame():
         answer = input("Would you like to start a new game? If yes, type 'yes', if no, 'no':")
         if answer == 'yes':
             return True
-        elif answer == 'no':
+        else:
             return False
 
     def playHangman(self):
         self.__initialiseGame()
         self.__printHiddenWord()
+        self.__printHangmanFigure()
         roundCounter = 0
         while True:
             if self.guessesLeft == 0:
                 print("Ohh, game over")
             playerInputLetter = Hangman.__getAnInput()
             self.__processCurrentGuess(playerInputLetter)
-            self.__updateHiddenWord(playerInputLetter)
-            self.printHangmanFigure()
             roundCounter += 1
             if self.randomWordLettersHidden == self.randomWordLetters:
-                print(" ")
+                print("")
                 print("Yeeee, you won in %s guesses!" % str(roundCounter))
                 break
             if self.guessesLeft > 0:
-                print(" ")
-                print("You have %s guesses left" % str(self.guessesLeft))
+                print("")
+                print("You have %s wrong guesses left" % str(self.guessesLeft))
 
     def playRepeatedly(self):
         while True:
             self.playHangman()
-            newGame = self.wouldLikeANewGame()
+            newGame = Hangman.__wouldLikeANewGame()
             if newGame is False:
                 print("I hope you had fun!")
                 break
