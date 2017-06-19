@@ -2,7 +2,7 @@ import json
 from collections import Counter
 
 
-def monthsCounter():
+def countTheMonths():
     with open("info.json", "r") as f:
         birthdaysDict = json.load(f)
     months = []
@@ -14,8 +14,8 @@ def monthsCounter():
 
 
 def main():
-    countTheMonths = monthsCounter()
-    print(countTheMonths)
+    monthsCounter = countTheMonths()
+    print(monthsCounter)
 
 if __name__ == "__main__":
     main()
